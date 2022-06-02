@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cookies</title>
+  </head>
+  <body>
+    <h1>cookies builder</h1>
+    <input onchange="setCookie(this)" />
+    <button onclick="sayHi('name')">Let's talk, cookie!</button>
+    <p id="hi"></p>
+    <script>
+      function setCookie(e) {
+        document.cookie = "name=" + e.value + ";";
+      }
+      function sayHi(key) {
+        let name = getCookie(key);
+        document.getElementById("hi").innerHTML = "Hi " + name;
+      }
+
+      function getCookie(key) {
+        let cookie = decodeURIComponent(document.cookie);
+        let cookieList = cookie.split(";");
+        for (let i = 0; i < cookieList.length; i++) {
+          let c = cookieList[i];
+          if (c.charAt(0) == "") {
+            c = c.trim();
+          }
+          if (c.startsWith(key)) {
+            console.log("hi " + c);
+            return c.substring(key.length + 1, c.length);
+          }
+        }
+      }
+      console.log(document.cookie);
+      console.log(rCookie("test1"));
+      console.log(rCookie("test"));
+      cCookie("test1", "new Cookie", 30);
+      dCookie("test2");
+      function cCookie(cName, value, days) {
+        if (days) {
+          const d = new Date();
+          d.setTime(d.getTime() + days * 24 * 60 * 60 * 1000);
+          let e = "; expires=" + d.toUTCString();
+          document.cookie = cName + "=" + value + e + "; path=/";
+        }
+      }
+      function rCookie(cName) {
+        let cookieValue = false;
+        let arr = document.cookie.split("; ");
+        arr.forEach((str) => {
+          const cookie = str.split("=");
+          if (cookie[0] == cName) {
+            cookieValue = cookie[1];
+          }
+        });
+        return cookieValue;
+      }
+      function dCookie(cName) {
+        cCookie(cName, "", -1);
+      }
+    </script>
+  </body>
+</html>
